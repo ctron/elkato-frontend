@@ -7,6 +7,10 @@ use yew_hooks::use_session_storage;
 use yew_nested_router::{prelude::*, Switch as RouterSwitch};
 
 pub const API_URL: &str = "https://www.elkato.de/buchung/";
+
+#[cfg(not(debug_assertions))]
+pub const CORS_API_URL: &str = "https://elkato.dentrassi.de/url=https://www.elkato.de/buchung/";
+#[cfg(debug_assertions)]
 pub const CORS_API_URL: &str = "http://localhost:9999/https://www.elkato.de/buchung/";
 
 #[function_component(Application)]
