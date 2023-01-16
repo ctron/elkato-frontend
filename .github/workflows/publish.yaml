@@ -45,6 +45,8 @@ jobs:
       - name: Install dependencies
         run: cd main && npm install
 
+      - run: rustup target add wasm32-unknown-unknown
+
       - name: Build page
         run: cd main && trunk build
 
