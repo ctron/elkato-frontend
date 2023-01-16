@@ -1,0 +1,22 @@
+[package]
+name = "elkato-frontend"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+anyhow = "1"
+chrono = { version = "0.4", features = ["wasmbind"] }
+chrono-tz = "0.8.1"
+futures = "0.3"
+gloo-utils = "0.1"
+log = "0.4"
+patternfly-yew = "0.3.0"
+serde = { version = "1", features = ["derive"] }
+url = "2"
+wasm-bindgen = "0.2"
+wasm-logger = "0.2"
+yew = { version = "0.20", features = ["csr"] }
+yew-hooks = "0.2"
+yew-nested-router = "0.1.0"
+
+elkato-api = { path = "elkato-api" }
