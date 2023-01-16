@@ -11,7 +11,7 @@ ini_set('display_startup_errors', '1');
 error_reporting(E_ALL);
 
 $log = new Logger('api');
-$log->pushHandler(new StreamHandler(__DIR__.'/var/logs/api.log'));
+//$log->pushHandler(new StreamHandler(__DIR__.'/var/logs/api.log'));
 
 $url = $_GET['url'] ?? null;
 $method = $_SERVER['REQUEST_METHOD'];
