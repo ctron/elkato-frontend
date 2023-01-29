@@ -20,3 +20,9 @@ yew-hooks = "0.2"
 yew-nested-router = "0.1.0"
 
 elkato-api = { path = "elkato-api" }
+
+[profile.release]
+panic = 'abort'
+codegen-units = 1
+opt-level = 'z'
+lto = true
