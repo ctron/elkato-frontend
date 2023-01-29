@@ -1109,7 +1109,7 @@ function initSync(module) {
 
 async function init(input) {
     if (typeof input === 'undefined') {
-        input = new URL('elkato-frontend-d455f9668774b335_bg.wasm', import.meta.url);
+        input = new URL('elkato-frontend-b4a9bc2427b4f70e_bg.wasm', import.meta.url);
     }
     const imports = getImports();
 
