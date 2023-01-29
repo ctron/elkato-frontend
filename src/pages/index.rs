@@ -12,7 +12,11 @@ async fn bookings(credentials: Credentials) -> anyhow::Result<Vec<Booking>> {
     log::info!("Load bookings");
 
     let club = credentials.club.clone();
-    let api = Api::new(Url::parse(crate::app::CORS_API_URL)?, credentials)?;
+    let api = Api::new(
+        Url::parse(crate::app::API_URL)?,
+        Some(Url::parse(crate::app::CORS_API_URL)?),
+        credentials,
+    )?;
 
     let today = Utc::now().date_naive();
 
@@ -146,6 +150,7 @@ fn make_onclick<E>(sel_booking: &Booking) -> Callback<E> {
     let loc = sel_booking.location.clone();
     Callback::from(move |_| {
         if let Some(url) = &loc {
+            log::info!("Opening: {url}");
             gloo_utils::window()
                 .open_with_url_and_target(url.as_str(), "_blank")
                 .ok();

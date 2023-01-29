@@ -20,7 +20,8 @@ pub struct Credentials {
 
 pub struct Api {
     client: reqwest::Client,
-    url: Url,
+    frontend_url: Url,
+    proxy_url: Option<Url>,
     credentials: Credentials,
 }
 
@@ -43,7 +44,11 @@ pub struct ListOptions {
 }
 
 impl Api {
-    pub fn new(url: Url, credentials: Credentials) -> anyhow::Result<Self> {
+    pub fn new(
+        frontend_url: Url,
+        proxy_url: Option<Url>,
+        credentials: Credentials,
+    ) -> anyhow::Result<Self> {
         let mut headers = header::HeaderMap::new();
 
         headers.insert(
@@ -57,9 +62,14 @@ impl Api {
 
         Ok(Self {
             client,
-            url,
+            frontend_url,
+            proxy_url,
             credentials,
         })
+    }
+
+    fn url(&self) -> &Url {
+        self.proxy_url.as_ref().unwrap_or(&self.frontend_url)
     }
 
     pub fn list_bookings(
@@ -72,15 +82,18 @@ impl Api {
             offset: Option<usize>,
             client: reqwest::Client,
             url: Result<Url, ParseError>,
+            frontend_url: Url,
             options: ListOptions,
         }
 
-        let url = self.url.join("search.php");
+        let url = self.url().join("search.php");
+        let frontend_url = self.frontend_url.clone();
         let client = self.client.clone();
 
         let init = ListState {
             offset: Some(0),
             url,
+            frontend_url,
             client,
             credentials: self.credentials.clone(),
             options,
@@ -142,15 +155,12 @@ impl Api {
                             Some(p) => Some(p.to),
                         };
 
-                        let context = (next.url.clone(), next.credentials.clone());
+                        let context = (next.frontend_url.clone(), next.credentials.clone());
 
                         let y = stream::iter(result.bookings)
                             .map(move |b| {
                                 let mut b = b.clone();
-                                b.location = match &context.0 {
-                                    Ok(url) => make_url(&b.id, url, &context.1).ok(),
-                                    _ => None,
-                                };
+                                b.location = make_url(&b.id, &context.0, &context.1).ok();
                                 b
                             })
                             .map(|b| Ok(b));
