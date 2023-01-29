@@ -51,7 +51,7 @@ jobs:
       - run: rustup target add wasm32-unknown-unknown
 
       - name: Build page
-        run: cd main && trunk build
+        run: cd main && trunk build --release
 
       - name: Checkout current publish branch
         uses: actions/checkout@v3
