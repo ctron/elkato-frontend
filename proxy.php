@@ -37,7 +37,7 @@ foreach ($headers as $key => $header) {
     }
 }
 
-$headers['Content-Type'] = 'application/json';
+//$headers['Content-Type'] = 'application/json';
 
 $log->info('API request received', ['url' => $url, 'method' => $method, 'headers' => $headers]);
 if ('POST' === $method) {
