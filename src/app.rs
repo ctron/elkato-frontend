@@ -1,18 +1,30 @@
 use crate::pages;
-use elkato_api::Credentials;
+use elkato_api::{CorsProxy, Credentials};
 use pages::{index::Index, Pages};
 use patternfly_yew::*;
+use url::Url;
 use yew::prelude::*;
 use yew_hooks::{use_session_storage, UseSessionStorageHandle};
 use yew_nested_router::{prelude::*, Switch as RouterSwitch};
 
-pub const API_URL: &str = "https://www.elkato.de/buchung/";
+pub const FRONTEND_URL: &str = "https://www.elkato.de/buchung/";
 
 #[cfg(not(debug_assertions))]
-pub const CORS_API_URL: &str =
-    "https://elkato.dentrassi.de/proxy.php?url=https://www.elkato.de/buchung/";
+pub fn cors_proxy() -> CorsProxy {
+    pub const CORS_API_URL: &str = "https://elkato.dentrassi.de/proxy.php";
+
+    CorsProxy::Query {
+        url: Url::parse(CORS_API_URL).unwrap(),
+        parameter: "url".to_string(),
+    }
+}
+
 #[cfg(debug_assertions)]
-pub const CORS_API_URL: &str = "http://localhost:9999/https://www.elkato.de/buchung/";
+pub fn cors_proxy() -> CorsProxy {
+    pub const CORS_API_URL: &str = "http://localhost:9999";
+
+    CorsProxy::Prepend(Url::parse(CORS_API_URL).unwrap())
+}
 
 const KEY_CREDENTIALS: &str = "credentials";
 

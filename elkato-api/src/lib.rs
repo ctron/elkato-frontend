@@ -11,6 +11,36 @@ use futures::{stream, StreamExt, TryStreamExt};
 use reqwest::header::{self, HeaderValue};
 use url::{ParseError, Url};
 
+pub enum CorsProxy {
+    None,
+    Prepend(Url),
+    Query { url: Url, parameter: String },
+}
+
+impl CorsProxy {
+    pub fn to_url(&self, url: Url) -> Result<Url, ParseError> {
+        match self {
+            Self::None => Ok(url),
+            Self::Prepend(proxy) => {
+                let mut proxy = proxy.clone();
+                proxy.set_path(url.as_str());
+                Ok(proxy)
+            }
+            Self::Query {
+                url: proxy_url,
+                parameter,
+            } => {
+                let mut proxy_url = proxy_url.clone();
+                proxy_url
+                    .query_pairs_mut()
+                    .clear()
+                    .append_pair(parameter, url.as_str());
+                Ok(proxy_url)
+            }
+        }
+    }
+}
+
 #[derive(Clone, Debug, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
 pub struct Credentials {
     pub username: String,
@@ -21,7 +51,7 @@ pub struct Credentials {
 pub struct Api {
     client: reqwest::Client,
     frontend_url: Url,
-    proxy_url: Option<Url>,
+    proxy: CorsProxy,
     credentials: Credentials,
 }
 
@@ -46,7 +76,7 @@ pub struct ListOptions {
 impl Api {
     pub fn new(
         frontend_url: Url,
-        proxy_url: Option<Url>,
+        proxy: CorsProxy,
         credentials: Credentials,
     ) -> anyhow::Result<Self> {
         let mut headers = header::HeaderMap::new();
@@ -63,13 +93,13 @@ impl Api {
         Ok(Self {
             client,
             frontend_url,
-            proxy_url,
+            proxy,
             credentials,
         })
     }
 
-    fn url(&self) -> &Url {
-        self.proxy_url.as_ref().unwrap_or(&self.frontend_url)
+    fn url(&self, path: &str) -> Result<Url, ParseError> {
+        self.proxy.to_url(self.frontend_url.join(path)?)
     }
 
     pub fn list_bookings(
@@ -86,7 +116,7 @@ impl Api {
             options: ListOptions,
         }
 
-        let url = self.url().join("search.php");
+        let url = self.url("search.php");
         let frontend_url = self.frontend_url.clone();
         let client = self.client.clone();
 
@@ -177,5 +207,46 @@ impl Api {
             }
         })
         .try_flatten()
+    }
+}
+
+#[cfg(test)]
+mod test {
+    use crate::CorsProxy;
+    use url::Url;
+
+    #[test]
+    fn test_cors_none() {
+        let base = Url::parse("https://foo.bar").unwrap();
+        assert_eq!(
+            CorsProxy::None.to_url(base.clone()),
+            Url::parse("https://foo.bar")
+        )
+    }
+
+    #[test]
+    fn test_cors_prepend() {
+        let base = Url::parse("https://foo.bar").unwrap();
+        assert_eq!(
+            CorsProxy::Prepend(Url::parse("https://localhost:1234").unwrap())
+                .to_url(base.clone())
+                .map(|s| s.to_string()),
+            Url::parse("https://localhost:1234/https://foo.bar/").map(|s| s.to_string())
+        )
+    }
+
+    #[test]
+    fn test_cors_query() {
+        let base = Url::parse("https://foo.bar").unwrap();
+        assert_eq!(
+            CorsProxy::Query {
+                url: Url::parse("https://localhost:1234").unwrap(),
+                parameter: "url".into(),
+            }
+            .to_url(base.clone())
+            .map(|s| s.to_string()),
+            Url::parse("https://localhost:1234?url=https%3A%2F%2Ffoo.bar%2F")
+                .map(|s| s.to_string())
+        )
     }
 }

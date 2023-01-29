@@ -13,8 +13,8 @@ async fn bookings(credentials: Credentials) -> anyhow::Result<Vec<Booking>> {
 
     let club = credentials.club.clone();
     let api = Api::new(
-        Url::parse(crate::app::API_URL)?,
-        Some(Url::parse(crate::app::CORS_API_URL)?),
+        Url::parse(crate::app::FRONTEND_URL)?,
+        crate::app::cors_proxy(),
         credentials,
     )?;
 
