@@ -14,6 +14,12 @@ $log = new Logger('api');
 //$log->pushHandler(new StreamHandler(__DIR__.'/var/logs/api.log'));
 
 $url = $_GET['url'] ?? null;
+
+if (!str_starts_with($url, "https://www.elkato.de/")) {
+  http_response_code(400);
+  exit(0);
+}
+
 $method = $_SERVER['REQUEST_METHOD'];
 $headers = getallheaders();
 
