@@ -34,6 +34,10 @@ pub struct Session {
 }
 
 impl Session {
+    pub fn login(&self, credentials: Credentials) {
+        self.credentials.set(credentials);
+    }
+
     pub fn logout(&self) {
         self.credentials.delete();
     }
