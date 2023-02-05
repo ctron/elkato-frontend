@@ -173,7 +173,7 @@ impl Api {
                         let builder =
                             builder.query(&date_filter_to_query("e_to", state.options.end_to));
 
-                        let resp = builder.send().await?;
+                        let resp = builder.send().await?.error_for_status()?;
 
                         log::debug!("URL: {}", resp.url());
 
