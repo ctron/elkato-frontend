@@ -10,7 +10,7 @@
 $headers = array_change_key_case(getallheaders());
 $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
 //$url = $headers['x-proxy-url'] ?? null;
-$url = $_GET["url"];
+$url = $_GET["url"] ?? null;
 $cookie = $headers['x-proxy-cookie'] ?? null;
 
 
