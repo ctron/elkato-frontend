@@ -9,14 +9,15 @@
 // Get normalized headers and such
 $headers = array_change_key_case(getallheaders());
 $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
-$url = $headers['x-proxy-url'] ?? null;
+//$url = $headers['x-proxy-url'] ?? null;
+$url = $_GET["url"];
 $cookie = $headers['x-proxy-cookie'] ?? null;
 
 
 
 // Check that we have a URL
 if( ! $url)
-    failure(400, "X-Proxy-Url header missing");
+    failure(400, "'url' query parameter missing");
 
 // Check that the URL looks like an absolute URL
 if( ! parse_url($url, PHP_URL_SCHEME))
