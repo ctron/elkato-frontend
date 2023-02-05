@@ -1032,19 +1032,19 @@ function getImports() {
         const ret = makeMutClosure(arg0, arg1, 80, __wbg_adapter_34);
         return addHeapObject(ret);
     };
-    imports.wbg.__wbindgen_closure_wrapper1917 = function(arg0, arg1, arg2) {
+    imports.wbg.__wbindgen_closure_wrapper1916 = function(arg0, arg1, arg2) {
         const ret = makeMutClosure(arg0, arg1, 80, __wbg_adapter_37);
         return addHeapObject(ret);
     };
-    imports.wbg.__wbindgen_closure_wrapper2938 = function(arg0, arg1, arg2) {
+    imports.wbg.__wbindgen_closure_wrapper2937 = function(arg0, arg1, arg2) {
         const ret = makeClosure(arg0, arg1, 80, __wbg_adapter_40);
         return addHeapObject(ret);
     };
-    imports.wbg.__wbindgen_closure_wrapper2947 = function(arg0, arg1, arg2) {
+    imports.wbg.__wbindgen_closure_wrapper2946 = function(arg0, arg1, arg2) {
         const ret = makeClosure(arg0, arg1, 80, __wbg_adapter_43);
         return addHeapObject(ret);
     };
-    imports.wbg.__wbindgen_closure_wrapper3798 = function(arg0, arg1, arg2) {
+    imports.wbg.__wbindgen_closure_wrapper3797 = function(arg0, arg1, arg2) {
         const ret = makeMutClosure(arg0, arg1, 80, __wbg_adapter_46);
         return addHeapObject(ret);
     };
@@ -1084,7 +1084,7 @@ function initSync(module) {
 
 async function init(input) {
     if (typeof input === 'undefined') {
-        input = new URL('elkato-frontend-c1af287fa6a63ae8_bg.wasm', import.meta.url);
+        input = new URL('elkato-frontend-a7d411b4d270eb5e_bg.wasm', import.meta.url);
     }
     const imports = getImports();
 
