@@ -128,11 +128,16 @@ pub struct BookingCardProps {
 #[function_component(BookingCard)]
 fn booking_card(props: &BookingCardProps) -> Html {
     let now = Utc::now();
+
+    let selection = match (props.booking.is_past(&now), props.booking.is_active(&now)) {
+        (true, _) => CardSelection::Disabled,
+        (false, active) => CardSelection::Selectable { selected: active },
+    };
+
     html!(
         <Card
-            selectable=true
             onclick={make_onclick(&props.booking)}
-            selected={props.booking.is_active(&now)}
+            {selection}
             title={html!{<>
                 { title(&props.booking, &now) }
             </>}}

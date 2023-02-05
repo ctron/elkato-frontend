@@ -19,4 +19,8 @@ impl Booking {
     pub fn is_active(&self, now: &DateTime<Utc>) -> bool {
         now >= &self.start && now <= &self.end
     }
+
+    pub fn is_past(&self, now: &DateTime<Utc>) -> bool {
+        now >= &self.end
+    }
 }

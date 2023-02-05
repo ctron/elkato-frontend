@@ -26,3 +26,6 @@ panic = 'abort'
 codegen-units = 1
 opt-level = 'z'
 lto = true
+
+[patch.crates-io]
+patternfly-yew = { git = "https://github.com/ctron/patternfly-yew", rev = "6da57c9173e199897d3910408f400ce7b407cdac" }
