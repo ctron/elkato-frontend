@@ -11,7 +11,7 @@ use yew_hooks::{use_async_with_options, UseAsyncOptions};
 async fn bookings(credentials: Credentials) -> anyhow::Result<Vec<Booking>> {
     log::info!("Load bookings");
 
-    let club = credentials.club.clone();
+    let owner = credentials.username.clone();
     let api = Api::new(
         Url::parse(crate::app::FRONTEND_URL)?,
         crate::app::cors_proxy(),
@@ -23,7 +23,7 @@ async fn bookings(credentials: Credentials) -> anyhow::Result<Vec<Booking>> {
     log::info!("Load bookings (begin)");
 
     api.list_bookings(ListOptions {
-        owner: Some(club.into()),
+        owner: Some(owner),
         start_from: Some(today - Duration::days(7)),
         end_to: Some(today + Duration::days(7)),
         ..Default::default()
