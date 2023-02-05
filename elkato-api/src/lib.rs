@@ -33,7 +33,6 @@ impl CorsProxy {
                 let mut proxy_url = proxy_url.clone();
                 proxy_url
                     .query_pairs_mut()
-                    .clear()
                     .append_pair(parameter, url.as_str());
                 Ok(proxy_url)
             }
