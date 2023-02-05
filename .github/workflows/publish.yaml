@@ -68,11 +68,6 @@ jobs:
           cd "$GITHUB_WORKSPACE/publish"
           rm * -Rf
           cp -a "$GITHUB_WORKSPACE"/main/dist/* .
-          
-          mkdir -p php
-          cp -a "$GITHUB_WORKSPACE"/main/php/* ./php/
-          cp -p "$GITHUB_WORKSPACE"/main/proxy.php ./
-          
           git add -A
           if ! git diff --cached --exit-code; then
             echo "Changes have been detected, publishing to repo."
