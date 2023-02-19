@@ -64,6 +64,7 @@ do
             CURLOPT_URL => $url,
             CURLOPT_HTTPHEADER => $headers,
             CURLOPT_HEADER => true,
+            CURLOPT_UNRESTRICTED_AUTH => true,
         ]
         + ($curl_opts ?? []) +
         [
