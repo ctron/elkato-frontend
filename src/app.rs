@@ -1,5 +1,5 @@
 use crate::pages;
-use elkato_api::{CorsProxy, Credentials};
+use elkato_api::{cors::CorsProxy, Credentials};
 use pages::{index::Index, Pages};
 use patternfly_yew::*;
 use url::Url;
@@ -90,7 +90,7 @@ pub fn with_credentials(props: &WithCredentialsProps) -> Html {
 
     let tools = html!(
         <>
-            <Button icon={Icon::PowerOffIcon} onclick={logout} />
+            <Button icon={Icon::PowerOff} onclick={logout} />
         </>
     );
 

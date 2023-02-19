@@ -3,7 +3,7 @@ use chrono::{DateTime, Duration, Utc};
 use chrono_tz::Europe::Berlin;
 use elkato_api::*;
 use futures::{StreamExt, TryStreamExt};
-use patternfly_yew::*;
+use patternfly_yew::prelude::*;
 use url::Url;
 use yew::prelude::*;
 use yew_hooks::{use_async_with_options, UseAsyncOptions};
@@ -78,7 +78,7 @@ pub fn index(props: &Props) -> Html {
     );
 
     html!(<>
-        <PageSection variant={PageSectionVariant::Light}>
+        <PageSection variant={PageSectionVariant::Light} sticky={[PageSectionSticky::Top]}>
             <Title level={Level::H1} size={Size::XXXXLarge}>{ "Bookings" }</Title>
         </PageSection>
         <PageSection variant={PageSectionVariant::Light}> {
@@ -136,6 +136,7 @@ fn booking_card(props: &BookingCardProps) -> Html {
 
     html!(
         <Card
+            class="ef-booking-card"
             onclick={make_onclick(&props.booking)}
             {selection}
             title={html!{<>
