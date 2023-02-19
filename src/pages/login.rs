@@ -13,7 +13,7 @@ pub fn login() -> Html {
 
     let session = use_context::<Session>().unwrap();
 
-    let onclick = {
+    let onsubmit = {
         let session = session.clone();
         let username = username.clone();
         let password = password.clone();
@@ -57,7 +57,7 @@ pub fn login() -> Html {
             <LoginMain>
                 <LoginMainHeader {title} description="Enter credentials and club for your Elkato booking system account"/>
                 <LoginMainBody>
-                    <Form>
+                    <Form {onsubmit}>
                         <FormGroup label="Club">
                             <TextInput required=true name="club" onchange={set_club}/>
                         </FormGroup>
@@ -68,7 +68,7 @@ pub fn login() -> Html {
                             <TextInput required=true name="password" r#type="password" onchange={set_password}/>
                         </FormGroup>
                         <ActionGroup>
-                            <Button label="Log In" r#type={ButtonType::Button} variant={Variant::Primary} {onclick}/>
+                            <Button label="Log In" r#type={ButtonType::Submit} variant={Variant::Primary}/>
                             <Button label="Use Demo" r#type={ButtonType::Button} variant={Variant::Secondary} onclick={onclick_demo}/>
                         </ActionGroup>
                     </Form>

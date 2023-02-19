@@ -28,4 +28,4 @@ opt-level = 'z'
 lto = true
 
 [patch.crates-io]
-patternfly-yew = { git = "https://github.com/ctron/patternfly-yew", rev = "9c09005960101ab6b17b6107f053f52d5576279d" }
+patternfly-yew = { git = "https://github.com/ctron/patternfly-yew", rev = "8af934b110f14386818357813a8f903c8c3ccf3c" }
