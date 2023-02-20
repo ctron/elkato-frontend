@@ -1,4 +1,4 @@
-use crate::app::Session;
+use crate::session::Session;
 use elkato_api::Credentials;
 use patternfly_yew::*;
 use yew::prelude::*;

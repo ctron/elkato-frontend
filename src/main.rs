@@ -2,7 +2,7 @@
 
 mod app;
 mod pages;
-mod state;
+mod session;
 
 pub(crate) mod utils;
 

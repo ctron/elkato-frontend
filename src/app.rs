@@ -1,10 +1,12 @@
-use crate::pages;
+use crate::{
+    pages,
+    session::{use_session, Session},
+};
 use elkato_api::{cors::CorsProxy, Credentials};
 use pages::{index::Index, Pages};
 use patternfly_yew::*;
 use url::Url;
 use yew::prelude::*;
-use yew_hooks::{use_session_storage, UseSessionStorageHandle};
 use yew_nested_router::{prelude::*, Switch as RouterSwitch};
 
 pub const FRONTEND_URL: &str = "https://www.elkato.de/buchung/";
@@ -26,26 +28,9 @@ pub fn cors_proxy() -> CorsProxy {
     CorsProxy::Prepend(Url::parse(CORS_API_URL).unwrap())
 }
 
-const KEY_CREDENTIALS: &str = "credentials";
-
-#[derive(Clone, PartialEq)]
-pub struct Session {
-    pub credentials: UseSessionStorageHandle<Credentials>,
-}
-
-impl Session {
-    pub fn login(&self, credentials: Credentials) {
-        self.credentials.set(credentials);
-    }
-
-    pub fn logout(&self) {
-        self.credentials.delete();
-    }
-}
-
 #[function_component(Application)]
 pub fn app() -> Html {
-    let credentials = use_session_storage::<Credentials>(KEY_CREDENTIALS.into());
+    let credentials = use_session();
 
     log::info!("Credentials: {:?}", *credentials);
 
